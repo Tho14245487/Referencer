@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by COX08145982 on 16/12/2015.
@@ -72,8 +74,52 @@ public class Panels {
 
         JButton Cbutton = new JButton("Create Reference");
         JButton example = new JButton("Generate Example");
+        JButton Export = new JButton("Export File");
+        //These commands insert a new button, which is set to wrap around the name
+        //specified in the (), which appears in the button; the button does not appear yet
+
+        Export.setEnabled(false);
+        //This command disables the Export button, making it faded and un-usable unstil re-enabled
+
         inner.add(Cbutton);
         inner.add(example);
+
+       //These inner adds place the inserted buttons into position, making them visible
+        inner.add(Export);
+
+        Export.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                String reference = jep.getText();
+
+                //Try is used to signify a block of code that is more likely to fall victim to exceptions and
+                //potentially crash the program. Catch is the end of the try clause.
+
+                try {
+                    System.out.println("Writing records to file...");
+
+                    //Printwriter takes the formated representation of data (What is displayed) and converts it into
+                    //a text stream as output, this is usually done by creating a file with the text chosen inside
+
+                    PrintWriter writer = new PrintWriter("savefile.txt", "UTF-8");
+
+                        writer.println(reference);
+                        //This line of code pulls the data from the variable set as "reference" to print out as
+                        //text
+
+                    writer.close();
+                }
+
+                //Catch is used to end a try clause, which signifies the end of a piece of code more likely
+                //to throw an exception, and is used to contain these exceptions to prevent crashes
+
+                catch (IOException f) {
+                    System.out.println("Error writing to file:  " +  f.getMessage());
+                }
+            }
+        });
+
+
 
         Cbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -95,6 +141,12 @@ public class Panels {
                 // Method to create actusl reference   //
 
                 jep.setText("<div style=\"font-family:calibri;width:400px\">" + full + "</div>");
+
+                Export.setEnabled(true);
+                //This command re-enables the Export button, allowing it to be used, which is made available
+                //after the conditions above occur, in this case, after a different button is pressed
+                //This conditional activation is achieved by where the code is positioned
+
             }
         });
 
